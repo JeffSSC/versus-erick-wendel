@@ -2,6 +2,9 @@
 
 Você vai abrir um Pull Request com **uma pasta só sua**. Tudo que importa está em três regras.
 
+O que a API precisa fazer está no **contrato impresso, em cima da mesa**. Este arquivo
+aqui é só sobre como empacotar e entregar.
+
 ## As 3 regras
 
 ### 1. Sua API escuta na porta 3000
@@ -60,9 +63,15 @@ Respondeu? Está entregue. Não respondeu? Quase sempre é a regra 2 (`0.0.0.0`)
 
 > As portas externas: `erick` → `7811`, `juniors` → `7812`.
 
-## O que NÃO precisa
+## Não esqueça do `POST /batch/reset`
 
-- Banco de dados externo, Redis, fila — se quiser usar, o problema de subir junto é seu.
-  Estado em memória é uma escolha válida e mais rápida de fazer em 2 horas.
-- Imagem otimizada, multi-stage, `.dockerignore` — ninguém vai avaliar isso.
-- Testes, README, documentação. O que vale é a API de pé respondendo o contrato.
+É o endpoint mais fácil do contrato e o mais fácil de esquecer. Ele é chamado **antes de
+cada rodada de teste** pra devolver o lote ao estado inicial.
+
+Se ele não funcionar, sua rodada seguinte começa com o lote já esgotado — e o placar vai
+mostrar isso na tela, ao vivo.
+
+## Banco de dados
+
+Se for usar banco, a sugestão é **SQLite** — roda dentro do seu próprio container, sem
+precisar de serviço nenhum a mais.

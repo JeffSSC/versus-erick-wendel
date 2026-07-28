@@ -52,7 +52,16 @@ Rode **um sistema por vez** na hora do teste, pra não disputarem CPU.
 
 Mudou o código? `Ctrl+C` e `docker compose up --build erick` de novo.
 
-## Regras
+## O contrato da API
+
+**O contrato é entregue impresso, na mesa.** Ele diz quais endpoints implementar, com
+quais formatos e quais status codes.
+
+Linguagem, banco, arquitetura e como travar a concorrência são livres. Caminhos dos
+endpoints, formato de entrada e saída e status codes são obrigatórios — é o que permite
+o mesmo teste bater em todos os sistemas igual.
+
+## Regras de entrega
 
 São 3, e estão no **[CONTRIBUTING.md](./CONTRIBUTING.md)**:
 

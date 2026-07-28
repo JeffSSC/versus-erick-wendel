@@ -1,5 +1,6 @@
-# Testes de carga — ficam só na máquina do Gabriel até a hora da gravação
+# Ficam só na máquina do Gabriel — o contrato é entregue impresso, em cena
 k6/
+contrato/
 
 node_modules/
 __pycache__/
