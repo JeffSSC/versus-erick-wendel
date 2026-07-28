@@ -1,0 +1,23 @@
+## Suba UM sistema por vez na hora do teste, pra ninguém disputar CPU:
+##   docker compose up --build erick
+##   docker compose up --build juniors
+##
+## Ou os dois de uma vez (útil só pra conferir se buildam):
+##   docker compose up --build
+
+services:
+  erick:
+    build: ./erick
+    ports:
+      - "7811:3000"
+
+  juniors:
+    build: ./juniors
+    ports:
+      - "7812:3000"
+
+## Se quiser garantir que os dois competem com o mesmo hardware,
+## descomente estes limites em cada serviço acima:
+#
+#    cpus: 2
+#    mem_limit: 1g

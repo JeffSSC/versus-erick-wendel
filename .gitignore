@@ -1,0 +1,10 @@
+# Testes de carga — ficam só na máquina do Gabriel até a hora da gravação
+k6/
+
+node_modules/
+__pycache__/
+target/
+bin/
+obj/
+out/
+.DS_Store
