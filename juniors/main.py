@@ -1,26 +1,48 @@
-import json
-import os
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from fastapi import FastAPI
 
-PORT = int(os.environ.get("PORT", 3000))
+app = FastAPI()
 
 
-class Handler(BaseHTTPRequestHandler):
-    def responder(self):
-        corpo = json.dumps({"status": "ok"}).encode()
-        self.send_response(200)
-        self.send_header("content-type", "application/json")
-        self.send_header("content-length", str(len(corpo)))
-        self.end_headers()
-        self.wfile.write(corpo)
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
 
-    do_GET = responder
-    do_POST = responder
+def current_state():
+    return { "total": total, "sold": sold, "available": total - sold }
 
-    def log_message(self, *args):
-        pass  # silencia o log por request — sob carga ele vira gargalo
+def er():
+    return { "error": "error" }
 
+total = 100
+sold = 0
 
-# O '0.0.0.0' é obrigatório — sem ele o container sobe mas não responde de fora.
-print(f"ouvindo na porta {PORT}", flush=True)
-ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
+@app.get("/batch")
+def view_batch():
+    if (total - sold) >= 0:
+        return current_state()
+    return er()
+
+@app.post("/batch/reset")
+def reset_batch():
+    total = 100
+    sold = 0
+    return current_state()
+
+@app.post("/webhook/payment")
+def handle_payment(req):
+  return req
+  if (status != "FAILED" or status != "SOLD"):
+      return er()
+
+# 1. Define your data structure
+class Item():
+    reservation_id: str
+    status: str
+
+# 2. Pass the model as a parameter in your route
+@app.post("/webhook/payment")
+async def handle_payment():
+    # Access properties directly using dot notation
+    req_dict = req.model_dump()
+    if (req_dict.status != "FAILED" or req_dict.status != "SOLD"):
+        return er()
