@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request # type: ignore
 
 app = FastAPI()
 
@@ -8,24 +8,24 @@ def read_root():
     return {"Hello": "World"}
 
 def current_state():
-    return { "total": total, "sold": sold, "available": total - sold }
+    return { "total": app.state.total, "sold": app.state.sold, "available": app.state.total - app.state.sold }
 
 def er():
     return { "error": "error" }
 
-total = 100
-sold = 0
+app.state.total = 120
+app.state.sold = 10
 
 @app.get("/batch")
 def view_batch():
-    if (total - sold) >= 0:
+    if (app.state.total - app.state.sold) >= 0:
         return current_state()
     return er()
 
 @app.post("/batch/reset")
 def reset_batch():
-    total = 100
-    sold = 0
+    app.state.total = 100
+    app.state.sold = 0
     return current_state()
 
 @app.post("/webhook/payment")
