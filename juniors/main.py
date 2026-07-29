@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 app = FastAPI()
 
@@ -29,20 +29,8 @@ def reset_batch():
     return current_state()
 
 @app.post("/webhook/payment")
-def handle_payment(req):
-  return req
+async def handle_payment(req: Request):
+  payload = await req.json()
+  status = payload.get("status")
   if (status != "FAILED" or status != "SOLD"):
       return er()
-
-# 1. Define your data structure
-class Item():
-    reservation_id: str
-    status: str
-
-# 2. Pass the model as a parameter in your route
-@app.post("/webhook/payment")
-async def handle_payment():
-    # Access properties directly using dot notation
-    req_dict = req.model_dump()
-    if (req_dict.status != "FAILED" or req_dict.status != "SOLD"):
-        return er()
