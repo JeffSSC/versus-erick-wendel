@@ -1,7 +1,11 @@
 from fastapi import FastAPI, Request # type: ignore
+import os
+from pydantic import BaseModel
 
 app = FastAPI()
 
+class Req(BaseModel):
+    req: str
 
 @app.get("/")
 def read_root():
@@ -34,3 +38,28 @@ async def handle_payment(req: Request):
   status = payload.get("status")
   if (status != "FAILED" or status != "SOLD"):
       return er()
+app = FastAPI()
+
+ingressos = {
+    "total": 100,
+    "sold": 10,
+}
+
+available = ingressos["total"] - ingressos["sold"]
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+@app.post("/reservations", status_code=201)
+async def handle_reservation(request: Request):
+    payload = await request.json()
+    quantity = payload["quantity"]
+    if available == 0:
+        return {"SOLD OUT"}
+    try:
+        if (available - quantity) < 0:
+            return {f"Selecione menos de {available}" }
+        return {"reservado"}
+    except:
+        return {"error"}
